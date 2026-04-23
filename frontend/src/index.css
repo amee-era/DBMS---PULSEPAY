@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+:root {
+  font-family: "Source Sans 3", "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #FFF9F0;
+  color: #081F5C;
+}

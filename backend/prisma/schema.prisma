@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  user
+  admin
+}
+
+enum TransactionStatus {
+  SUCCESS
+  FAILED
+  RETRIED
+}
+
+model User {
+  id                   Int           @id @default(autoincrement())
+  email                String        @unique
+  password             String
+  role                 Role          @default(user)
+  balance              Float         @default(1000)
+  sentTransactions     Transaction[] @relation("SentTransactions")
+  receivedTransactions Transaction[] @relation("ReceivedTransactions")
+}
+
+model Transaction {
+  id          Int               @id @default(autoincrement())
+  senderId    Int
+  receiverId  Int
+  amount      Float
+  status      TransactionStatus @default(SUCCESS)
+  retry_count Int               @default(0)
+  createdAt   DateTime          @default(now())
+  sender      User              @relation("SentTransactions", fields: [senderId], references: [id])
+  receiver    User              @relation("ReceivedTransactions", fields: [receiverId], references: [id])
+}
