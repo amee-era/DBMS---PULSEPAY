@@ -11,12 +11,12 @@ dotenv.config();
 
 const app = express();
 const PORT = 5000;
-const allowedOrigin = 'http://localhost:5173';
+const allowedOrigins = new Set(['http://localhost:5173', 'http://127.0.0.1:5173']);
 
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || origin === allowedOrigin) {
+      if (!origin || allowedOrigins.has(origin)) {
         return callback(null, true);
       }
 
